@@ -1,0 +1,28 @@
+---
+description: Determining user stories, feature requests, and deliverables for this project.
+globs: 
+alwaysApply: false
+---
+- id: US01
+  title: Supportive LinkedIn reply
+  persona: Professional
+  summary: Generate a supportive comment to acknowledge a promotion or success.
+  tags: [tone-selection, linkedin]
+
+- id: US03
+  title: Concise Twitter reply
+  persona: Twitter Creator
+  summary: Generate witty replies under 280 characters for trending posts.
+  tags: [character-limit, twitter]
+
+- id: US05
+  title: Reddit subreddit-aware reply
+  persona: Reddit Enthusiast
+  summary: Match tone to subreddit style (e.g. serious vs casual).
+  tags: [tone-selection, reddit]
+
+- id: US07
+  title: Custom prompt editing
+  persona: Tech Builder
+  summary: Allow developers to customize the prompt template.
+  tags: [developer, custom-prompts]

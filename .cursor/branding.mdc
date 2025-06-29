@@ -1,0 +1,17 @@
+---
+description: Tasks involving branding, such as color configuration, icons and images, fonts.
+globs: 
+alwaysApply: false
+---
+primaryColor: "#3B82F6"
+accentColor: "#10B981"
+neutralColor: "#6B7280"
+darkColor: "#1E293B"
+lightColor: "#FFFFFF"
+fontFamily: "Inter, sans-serif"
+tone: Approachable, smart, helpful
+iconFiles:
+  - icons/icon-16.png
+  - icons/icon-32.png
+  - icons/icon-48.png
+  - icons/icon-128.png

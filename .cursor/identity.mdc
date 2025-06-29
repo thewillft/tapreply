@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+name: TapReply
+description: A Chrome extension that uses AI to generate tone-aware replies for social media posts like LinkedIn, Twitter, and Reddit.
+slogan: Smarter replies with just a tap.
+tags: [chrome-extension, llm, chatgpt, ai-reply, social-engagement, open-source]

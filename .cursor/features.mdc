@@ -1,0 +1,19 @@
+---
+description: Determining features of this application, including for the Minimum-Viable-Product (MVP) and after.
+globs: 
+alwaysApply: false
+---
+mvp:
+  - Generate replies in supportive, analytical, or witty tones
+  - Platform detection for LinkedIn, Twitter/X, and Reddit
+  - Extract visible post content
+  - Use OpenAI/Gemini API to generate responses
+  - Basic popup UI with reply display and copy button
+  - Editable prompt templates (advanced users)
+  - Local storage of user tone preference
+after mvp:
+  - Tone training based on user's past posts
+  - Soft CTA suggestions for founders/brands
+  - Reply insertion into native input field
+  - Mobile support
+  - Subreddit-specific tone adaptation
