@@ -96,41 +96,21 @@ function extractTwitterContent() {
 }
 
 function extractRedditContent() {
-
-    // Try multiple selectors for Reddit posts
-    const selectors = [
-        '[data-test-id="post-content"]',
-        '.RichTextJSON-root',
-        '.Post__content',
-        '.RichTextJSON-root p',
-        '.Post__body',
-        '.Post__content p'
-    ];
-    
-    for (const selector of selectors) {
-        const element = document.querySelector(selector);
-        if (element && element.textContent.trim()) {
-            return element.textContent.trim();
-        }
-    }
-    
-    // Fallback: look for post titles and content
     const titleElement = document.querySelector('h1, .Post__title');
-    const contentElement = document.querySelector('.Post__content, .RichTextJSON-root');
-    
-    console.log(titleElement)
-    console.log(contentElement)
+    const title = titleElement ? titleElement.textContent.trim() : '';
 
-    let content = '';
-    if (titleElement) {
-        content += titleElement.textContent.trim() + ' ';
+    const contentElement = document.querySelector('[id*="t3_"][id*="post-rtjson-content"]');
+    const content = contentElement ? contentElement.textContent.trim() : '';
+
+    let result = '';
+    if (title) {
+        result += title + '\n\n';
     }
-    if (contentElement) {
-        content += contentElement.textContent.trim();
+    if (content) {
+        result += content;
     }
 
-    
-    return content.trim() || null;
+    return result.trim() || null;
 }
 
 // Auto-extract content when page loads (for future use)
