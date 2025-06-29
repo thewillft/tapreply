@@ -1,0 +1,357 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #FFFFFF;
+    color: #1E293B;
+    line-height: 1.5;
+    width: 380px;
+    min-height: 500px;
+}
+
+.container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.logo-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: #3B82F6;
+}
+
+.tagline {
+    font-size: 14px;
+    color: #6B7280;
+    font-weight: 400;
+}
+
+/* Platform Info */
+.platform-info {
+    display: flex;
+    justify-content: center;
+}
+
+.platform-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: #F3F4F6;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.platform-icon {
+    font-size: 16px;
+}
+
+.platform-name {
+    color: #6B7280;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1E293B;
+    margin-bottom: 12px;
+}
+
+/* Content Preview */
+.content-section {
+    background-color: #F8FAFC;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #E2E8F0;
+}
+
+.content-preview {
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.content-text {
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.6;
+}
+
+/* Tone Selection */
+.tone-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tone-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background-color: #F8FAFC;
+    border: 2px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6B7280;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+    min-width: 0;
+}
+
+.tone-btn:hover {
+    border-color: #3B82F6;
+    background-color: #EFF6FF;
+}
+
+.tone-btn.active {
+    background-color: #3B82F6;
+    border-color: #3B82F6;
+    color: #FFFFFF;
+}
+
+.tone-icon {
+    font-size: 16px;
+}
+
+/* Action Section */
+.action-section {
+    display: flex;
+    justify-content: center;
+}
+
+.generate-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.generate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.generate-btn:active {
+    transform: translateY(0);
+}
+
+.btn-icon {
+    font-size: 18px;
+}
+
+/* Loading Section */
+.loading-section {
+    text-align: center;
+    padding: 20px;
+}
+
+.loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #E2E8F0;
+    border-top: 3px solid #3B82F6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 12px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 14px;
+    color: #6B7280;
+    font-weight: 500;
+}
+
+/* Reply Section */
+.reply-section {
+    background-color: #F0F9FF;
+    border: 1px solid #BAE6FD;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.reply-content {
+    margin-bottom: 16px;
+}
+
+.reply-text {
+    font-size: 14px;
+    color: #1E293B;
+    line-height: 1.6;
+    background-color: #FFFFFF;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #E2E8F0;
+}
+
+.reply-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background-color: #FFFFFF;
+    border: 1px solid #D1D5DB;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6B7280;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+
+.action-btn:hover {
+    background-color: #F9FAFB;
+    border-color: #9CA3AF;
+}
+
+.copy-btn:hover {
+    background-color: #10B981;
+    border-color: #10B981;
+    color: #FFFFFF;
+}
+
+.regenerate-btn:hover {
+    background-color: #3B82F6;
+    border-color: #3B82F6;
+    color: #FFFFFF;
+}
+
+/* Error Section */
+.error-section {
+    text-align: center;
+    padding: 20px;
+    background-color: #FEF2F2;
+    border: 1px solid #FECACA;
+    border-radius: 12px;
+}
+
+.error-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.error-icon {
+    font-size: 20px;
+}
+
+.error-text {
+    font-size: 14px;
+    color: #DC2626;
+    font-weight: 500;
+}
+
+.retry-btn {
+    padding: 8px 16px;
+    background-color: #DC2626;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.retry-btn:hover {
+    background-color: #B91C1C;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding-top: 16px;
+    border-top: 1px solid #E5E7EB;
+    margin-top: auto;
+}
+
+.footer-text {
+    font-size: 12px;
+    color: #9CA3AF;
+}
+
+/* Scrollbar Styling */
+.content-preview::-webkit-scrollbar {
+    width: 4px;
+}
+
+.content-preview::-webkit-scrollbar-track {
+    background: #F1F5F9;
+    border-radius: 2px;
+}
+
+.content-preview::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 2px;
+}
+
+.content-preview::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 400px) {
+    .container {
+        padding: 16px;
+    }
+    
+    .tone-buttons {
+        flex-direction: column;
+    }
+    
+    .reply-actions {
+        flex-direction: column;
+    }
+} 

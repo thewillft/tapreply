@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TapReply</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="../images/icon32.png" alt="TapReply" class="logo-icon">
+                <h1 class="logo-text">TapReply</h1>
+            </div>
+            <p class="tagline">Smarter replies with just a tap</p>
+        </header>
+
+        <!-- Platform Detection -->
+        <div class="platform-info" id="platformInfo">
+            <div class="platform-badge" id="platformBadge">
+                <span class="platform-icon" id="platformIcon">🌐</span>
+                <span class="platform-name" id="platformName">Detecting platform...</span>
+            </div>
+        </div>
+
+        <!-- Content Preview -->
+        <div class="content-section" id="contentSection" style="display: none;">
+            <h3 class="section-title">Post Content</h3>
+            <div class="content-preview" id="contentPreview">
+                <p class="content-text" id="contentText">Loading post content...</p>
+            </div>
+        </div>
+
+        <!-- Tone Selection -->
+        <div class="tone-section">
+            <h3 class="section-title">Reply Tone</h3>
+            <div class="tone-buttons">
+                <button class="tone-btn active" data-tone="supportive">
+                    <span class="tone-icon">🤝</span>
+                    Supportive
+                </button>
+                <button class="tone-btn" data-tone="analytical">
+                    <span class="tone-icon">🧠</span>
+                    Analytical
+                </button>
+                <button class="tone-btn" data-tone="witty">
+                    <span class="tone-icon">😄</span>
+                    Witty
+                </button>
+            </div>
+        </div>
+
+        <!-- Generate Button -->
+        <div class="action-section">
+            <button class="generate-btn" id="generateBtn">
+                <span class="btn-icon">✨</span>
+                Generate Reply
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-section" id="loadingSection" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Generating your reply...</p>
+        </div>
+
+        <!-- Generated Reply -->
+        <div class="reply-section" id="replySection" style="display: none;">
+            <h3 class="section-title">Generated Reply</h3>
+            <div class="reply-content" id="replyContent">
+                <p class="reply-text" id="replyText"></p>
+            </div>
+            <div class="reply-actions">
+                <button class="action-btn copy-btn" id="copyBtn">
+                    <span class="btn-icon">📋</span>
+                    Copy
+                </button>
+                <button class="action-btn regenerate-btn" id="regenerateBtn">
+                    <span class="btn-icon">🔄</span>
+                    Regenerate
+                </button>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div class="error-section" id="errorSection" style="display: none;">
+            <div class="error-content">
+                <span class="error-icon">⚠️</span>
+                <p class="error-text" id="errorText">Something went wrong. Please try again.</p>
+            </div>
+            <button class="retry-btn" id="retryBtn">Retry</button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">Powered by AI • Made with ❤️</p>
+        </footer>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html> 
