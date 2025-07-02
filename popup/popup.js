@@ -42,6 +42,31 @@ class TapReplyPopup {
             this.hideError();
             this.generateReply();
         });
+
+        // Error settings button
+        document.getElementById('errorSettingsBtn').addEventListener('click', () => {
+            this.openOptions();
+        });
+
+        // Settings button
+        document.getElementById('settingsBtn').addEventListener('click', () => {
+            this.openOptions();
+        });
+
+        // Github repo button
+        document.getElementById('githubBtn').addEventListener('click', () => {
+            this.openGitHub();
+        });
+
+        // Help button
+        document.getElementById('helpBtn').addEventListener('click', () => {
+            this.openHelp();
+        });
+
+        // Feedback (issues) button
+        document.getElementById('feedbackBtn').addEventListener('click', () => {
+            this.openFeedback();
+        });
     }
 
     async detectPlatform() {
@@ -229,6 +254,14 @@ class TapReplyPopup {
         
         document.getElementById('errorText').textContent = message;
         document.getElementById('errorSection').style.display = 'block';
+        
+        // Show settings button if it's an API key configuration error
+        const errorSettingsBtn = document.getElementById('errorSettingsBtn');
+        if (message.includes('API key not configured') || message.includes('API key')) {
+            errorSettingsBtn.style.display = 'flex';
+        } else {
+            errorSettingsBtn.style.display = 'none';
+        }
     }
 
     hideError() {
@@ -237,6 +270,22 @@ class TapReplyPopup {
 
     hideReply() {
         document.getElementById('replySection').style.display = 'none';
+    }
+
+    openOptions() {
+        chrome.runtime.openOptionsPage();
+    }
+
+    openGitHub() {
+        chrome.tabs.create({ url: 'https://github.com/thewillft/tapreply' });
+    }
+
+    openHelp() {
+        chrome.tabs.create({ url: 'https://github.com/thewillft/tapreply#readme' });
+    }
+
+    openFeedback() {
+        chrome.tabs.create({ url: 'https://github.com/thewillft/tapreply/issues' });
     }
 }
 

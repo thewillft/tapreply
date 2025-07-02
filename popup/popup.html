@@ -93,12 +93,34 @@
                 <span class="error-icon">⚠️</span>
                 <p class="error-text" id="errorText">Something went wrong. Please try again.</p>
             </div>
-            <button class="retry-btn" id="retryBtn">Retry</button>
+            <div class="error-actions">
+                <button class="error-btn retry-btn" id="retryBtn">Retry</button>
+                <button class="error-btn error-settings-btn" id="errorSettingsBtn" style="display: none;">
+                    Settings
+                </button>
+            </div>
         </div>
 
         <!-- Footer -->
         <footer class="footer">
-            <p class="footer-text">Powered by AI • Made with ❤️</p>
+            <div class="footer-content">
+                <div class="footer-buttons">
+                    <button class="footer-btn" id="settingsBtn" title="Settings">
+                        <span class="settings-icon">⚙️</span>
+                    </button>
+                    <button class="footer-btn" id="githubBtn" title="GitHub Repository">
+                        <span class="footer-icon">📚</span>
+                    </button>
+                    <button class="footer-btn" id="helpBtn" title="Help & Documentation">
+                        <span class="footer-icon">❓</span>
+                    </button>
+                    <button class="footer-btn" id="feedbackBtn" title="Send Feedback">
+                        <span class="footer-icon">💬</span>
+                    </button>
+                </div>
+            <p class="footer-text">Powered by AI • @thewillft</p>
+
+            </div>
         </footer>
     </div>
 

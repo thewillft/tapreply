@@ -10,7 +10,7 @@ mvp:
   - Use OpenAI/Gemini API to generate responses
   - Basic popup UI with reply display and copy button
   - Editable prompt templates (advanced users)
-  - Local storage of user tone preference
+  - Configure API key, default tone, etc
 after mvp:
   - Tone training based on user's past posts
   - Soft CTA suggestions for founders/brands
