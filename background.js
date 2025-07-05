@@ -3,10 +3,10 @@ chrome.runtime.onInstalled.addListener(() => {
     console.log("TapReply installed");
     // Set initial state
     chrome.storage.local.set({
-        preferredTone: 'supportive',
+        preferredTone: 'witty',
         apiKey: '',
         apiProvider: 'openai',
-        replyLength: 'medium',
+        replyLength: 'short',
         autoDetectPlatform: true
     });
 });
@@ -37,9 +37,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 async function generateReply(data) {
     try {
-        const { content, tone, platform } = data;
+        const { content, metadata, tone, platform } = data;
         
-        // Get API configuration from storage
         const config = await chrome.storage.local.get(['apiKey', 'apiProvider', 'replyLength']);
         
         if (!config.apiKey) {
@@ -49,11 +48,8 @@ async function generateReply(data) {
             };
         }
 
-        // Generate prompt based on platform and tone
-        const prompt = generatePrompt(content, tone, platform, config.replyLength);
-        
-        // Call the appropriate API
-        const reply = await callLLMAPI(prompt, config.apiKey, config.apiProvider);
+        const { systemPrompt, userPrompt } = generatePrompt(content, metadata, tone, platform, config.replyLength);
+        const reply = await callLLMAPI(systemPrompt, userPrompt, config.apiKey, config.apiProvider);
         
         return {
             success: true,
@@ -79,11 +75,10 @@ async function testApiConnection(data) {
             };
         }
 
-        // Create a simple test prompt
-        const testPrompt = "Generate a simple test response. Just say 'API connection successful!'";
+        const testSystemPrompt = "You are a helpful AI assistant. Respond with exactly what the user asks for.";
+        const testUserPrompt = "Generate a simple test response. Just say 'API connection successful!'";
         
-        // Test the API
-        const response = await callLLMAPI(testPrompt, apiKey, provider);
+        const response = await callLLMAPI(testSystemPrompt, testUserPrompt, apiKey, provider);
         
         if (response && response.includes('successful')) {
             return {
@@ -105,57 +100,94 @@ async function testApiConnection(data) {
     }
 }
 
-function generatePrompt(content, tone, platform, replyLength = 'medium') {
+function generatePrompt(content, metadata, tone, platform, replyLength = 'medium') {
     const toneInstructions = {
-        supportive: "Write a supportive and encouraging reply that shows empathy and understanding.",
-        analytical: "Write an analytical reply that provides thoughtful insights and constructive feedback.",
-        witty: "Write a witty and engaging reply that's clever and entertaining while remaining respectful."
+        supportive: "Supportive, an encouraging reply that shows empathy and understanding towards the post content subject or author",
+        analytical: "Analytical, a reply that provides thoughtful insights and constructive feedback, furthering the conversation by bringing value",
+        witty: "Witty, an engaging reply that's clever and entertaining without being too cringe"
     };
 
     const platformContext = {
-        linkedin: "This is for LinkedIn, so keep it professional and business-oriented.",
-        twitter: "This is for Twitter/X, so keep it concise and engaging.",
-        reddit: "This is for Reddit, so adapt to the community's tone and style."
+        linkedin: "LinkedIn",
+        twitter: "Twitter/X",
+        reddit: "Reddit"
     };
 
     const lengthInstructions = {
-        short: "Keep the reply very concise (50-100 characters).",
-        medium: "Keep the reply moderate in length (100-200 characters).",
-        long: "You can write a longer, more detailed reply (200+ characters)."
+        short: "Keep the reply very tight, 1-2 sentences, 50-100 characters",
+        medium: "Keep the reply moderate in length, 2-3 sentences, 100-200 characters",
+        long: "You can write a longer, more detailed reply, 3-4 sentences, 200+ characters."
     };
 
-    return `You are an AI assistant helping users generate replies to social media posts.
+    // Build platform-specific context based on metadata
+    let platformSpecificContext = '';
+    if (metadata) {
+        // Loop through all metadata fields and add them to context
+        for (const [key, value] of Object.entries(metadata)) {
+            if (value !== null && value !== undefined) {
+                if (typeof value === 'object') {
+                    // Handle nested objects like engagement
+                    for (const [nestedKey, nestedValue] of Object.entries(value)) {
+                        if (nestedValue !== null && nestedValue !== undefined) {
+                            platformSpecificContext += `\n${nestedKey}: ${nestedValue}`;
+                        }
+                    }
+                } else {
+                    platformSpecificContext += `\n${key}: ${value}`;
+                }
+            }
+        }
+    }
 
-${platformContext[platform] || ''}
+    const systemPrompt = `You're a clever social media user known for smart, tight, and dryly humorous replies. You are given social media post content and asked to write comments that sound like they came from a real, slightly cynical but insightful person. Avoid sounding like a chatbot, overly cheerful, helpful, or corporate. Avoid the use of "—" in your replies. Engage with the original post, add value or humor, and never explain yourself. Pay attention to queues from the user about what your reply should contain an how it should sound.
 
-${toneInstructions[tone]}
+Example #1:
 
-${lengthInstructions[replyLength] || lengthInstructions.medium}
+Content - "I wonder what kind of 10x engineer decided to make the "-> type" in functions a suggestion
 
-Post content: "${content}"
+It would've made more sense if it was actually checking for something gives editors / linters (Pylance, MyPy, Pyright, Ruff…) something to check; does absolutely nothing at runtime unless you add a library or code that reads the annotation and enforces it."
 
-Generate a natural, authentic reply that:
-- Matches the specified tone
-- Is appropriate for the platform
-- Adds value to the conversation
-- Sounds human and genuine
-- Is not overly promotional or spammy
-- Follows the specified length guidelines
+Reply - "If only there was a document, a Python improvement proposal of sorts, that describes the decisions that went into the design of type annotations. We'll probably never know what went through their minds"
 
-Reply:`;
+Reply - "The flexibility lets Python stay dynamic, but yeah, runtime checks would be nice sometimes."
+
+Reply - "It's intentional. Keeps Python flexible while letting static tools do the heavy lifting."`;
+
+    const userPrompt = `Reply with a ${platformContext[platform]} comment, ${toneInstructions[tone]}. ${lengthInstructions[replyLength]}.
+
+${platformSpecificContext}
+
+Post: 
+${content}`;
+
+    return { systemPrompt, userPrompt };
 }
 
-async function callLLMAPI(prompt, apiKey, provider) {
+async function callLLMAPI(system_prompt, user_prompt, apiKey, provider) {
     if (provider === 'openai') {
-        return await callOpenAI(prompt, apiKey);
+        return await callOpenAI(system_prompt, user_prompt, apiKey);
     } else if (provider === 'gemini') {
-        return await callGemini(prompt, apiKey);
+        return await callGemini(system_prompt, user_prompt, apiKey);
     } else {
         throw new Error('Unsupported API provider');
     }
 }
 
-async function callOpenAI(prompt, apiKey) {
+async function callOpenAI(system_prompt, user_prompt, apiKey) {
+    const messages = [];
+    
+    if (system_prompt) {
+        messages.push({
+            role: 'system',
+            content: system_prompt
+        });
+    }
+    
+    messages.push({
+        role: 'user',
+        content: user_prompt
+    });
+
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -163,13 +195,8 @@ async function callOpenAI(prompt, apiKey) {
             'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-            model: 'gpt-3.5-turbo',
-            messages: [
-                {
-                    role: 'user',
-                    content: prompt
-                }
-            ],
+            model: 'gpt-4.1',
+            messages: messages,
             max_tokens: 150,
             temperature: 0.7
         })
@@ -184,7 +211,15 @@ async function callOpenAI(prompt, apiKey) {
     return data.choices[0].message.content.trim();
 }
 
-async function callGemini(prompt, apiKey) {
+async function callGemini(system_prompt, user_prompt, apiKey) {
+    let fullPrompt = '';
+    
+    if (system_prompt) {
+        fullPrompt += system_prompt + '\n\n';
+    }
+    
+    fullPrompt += user_prompt;
+
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: {
@@ -195,7 +230,7 @@ async function callGemini(prompt, apiKey) {
                 {
                     parts: [
                         {
-                            text: prompt
+                            text: fullPrompt
                         }
                     ]
                 }

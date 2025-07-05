@@ -4,6 +4,7 @@ class TapReplyPopup {
         this.currentTone = 'supportive';
         this.currentPlatform = null;
         this.currentContent = '';
+        this.currentMetadata = null;
         this.init();
     }
 
@@ -105,6 +106,29 @@ class TapReplyPopup {
         document.getElementById('platformName').textContent = name;
     }
 
+    updatePlatformDisplayFromData(platform) {
+        let platformIcon = '🌐';
+        let platformName = 'Unknown Platform';
+
+        switch (platform) {
+            case 'linkedin':
+                platformIcon = '💼';
+                platformName = 'LinkedIn';
+                break;
+            case 'twitter':
+                platformIcon = '🐦';
+                platformName = 'Twitter/X';
+                break;
+            case 'reddit':
+                platformIcon = '🤖';
+                platformName = 'Reddit';
+                break;
+        }
+
+        document.getElementById('platformIcon').textContent = platformIcon;
+        document.getElementById('platformName').textContent = platformName;
+    }
+
     async extractContent() {
         try {
             const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -114,9 +138,16 @@ class TapReplyPopup {
                 action: 'extractContent'
             });
 
-            if (response && response.content) {
-                this.currentContent = response.content;
-                this.displayContent();
+            if (response && response.contentData) {
+                if (response.contentData.platform) {
+                    this.currentPlatform = response.contentData.platform;
+                    this.updatePlatformDisplayFromData(this.currentPlatform);
+                }
+                if (response.contentData.content) {
+                    this.currentContent = response.contentData.content;
+                    this.currentMetadata = response.contentData.metadata;
+                    this.displayContent();
+                }
             } else {
                 this.showError('No post content found. Please make sure you are on a social media post page.');
             }
@@ -181,6 +212,7 @@ class TapReplyPopup {
                 action: 'generateReply',
                 data: {
                     content: this.currentContent,
+                    metadata: this.currentMetadata,
                     tone: this.currentTone,
                     platform: this.currentPlatform
                 }

@@ -33,7 +33,7 @@
         "*://*.x.com/*",
         "*://*.reddit.com/*"
       ],
-      "js": ["scripts/content.js"],
+      "js": ["scripts/platform-adapters.js", "scripts/content.js"],
       "run_at": "document_idle"
     }
   ]

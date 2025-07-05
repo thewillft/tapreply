@@ -11,9 +11,9 @@ mvp:
   - Basic popup UI with reply display and copy button
   - Editable prompt templates (advanced users)
   - Configure API key, default tone, etc
+  - Subreddit-specific tone adaptation
 after mvp:
   - Tone training based on user's past posts
   - Soft CTA suggestions for founders/brands
   - Reply insertion into native input field
   - Mobile support
-  - Subreddit-specific tone adaptation
