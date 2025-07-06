@@ -28,7 +28,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
     
     if (request.action === 'settingsUpdated') {
-        console.log('Settings updated:', request.settings);
+        // console.log('Settings updated:', request.settings);
         // Could trigger any necessary updates here
         sendResponse({ success: true });
         return true;
@@ -139,7 +139,7 @@ function generatePrompt(content, metadata, tone, platform, replyLength = 'medium
         }
     }
 
-    const systemPrompt = `You're a clever social media user known for smart, tight, and dryly humorous replies. You are given social media post content and asked to write comments that sound like they came from a real, slightly cynical but insightful person. Avoid sounding like a chatbot, overly cheerful, helpful, or corporate. Avoid the use of "—" in your replies. Engage with the original post, add value or humor, and never explain yourself. Pay attention to queues from the user about what your reply should contain an how it should sound.
+    const systemPrompt = `You're a clever social media user known for smart, tight, and dryly humorous replies. You are given social media post content and asked to write comments that sound like they came from a real, slightly cynical but insightful person. Avoid sounding like a chatbot, overly cheerful, helpful, or corporate. Avoid the use of "—" in your replies. Do not wrap your reply in quotes. Engage with the original post, add value or humor, and never explain yourself. Pay attention to queues from the user about what your reply should contain an how it should sound.
 
 Example #1:
 
@@ -197,8 +197,7 @@ async function callOpenAI(system_prompt, user_prompt, apiKey) {
         body: JSON.stringify({
             model: 'gpt-4.1',
             messages: messages,
-            max_tokens: 150,
-            temperature: 0.7
+            temperature: 1.0
         })
     });
 
@@ -220,9 +219,10 @@ async function callGemini(system_prompt, user_prompt, apiKey) {
     
     fullPrompt += user_prompt;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`, {
         method: 'POST',
         headers: {
+            'x-goog-api-key': apiKey,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -236,8 +236,10 @@ async function callGemini(system_prompt, user_prompt, apiKey) {
                 }
             ],
             generationConfig: {
-                maxOutputTokens: 150,
-                temperature: 0.7
+                temperature: 1.0,
+                thinkingConfig: {
+                    thinkingBudget: 0
+                }
             }
         })
     });
