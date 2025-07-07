@@ -5,7 +5,7 @@ AI-powered Chrome extension used to generate smart, tone-aware replies for socia
 
 ## Features
 
-- **Multi-Platform Support**: Works on LinkedIn, Twitter/X, and Reddit, with plans to add more later
+- **Multi-Platform Support**: Works on Twitter/X and Reddit, with plans to add more later
 - **Smart Content Extraction**: Automatically extracts post content and platform-specific metadata for best possible replies
 - **Tone-Aware Replies**: Generate supportive, analytical, or witty replies, with plans to add custom tones soon
 - **Platform-Optimized**: Replies are tailored to each platform's culture and context, whether it be professional or more casual
@@ -25,9 +25,7 @@ AI-powered Chrome extension used to generate smart, tone-aware replies for socia
 - Optimizes for character limits and platform style
 
 ### LinkedIn
-- Professional posts with business context
-- Identifies post types (job, article, image, text)
-- Maintains business-appropriate tone
+- **Temporarily Disabled**: LinkedIn support has been temporarily disabled while we work on improving the feed extraction functionality.
 
 
 ## Installation

@@ -108,7 +108,7 @@ function generatePrompt(content, metadata, tone, platform, replyLength = 'medium
     };
 
     const platformContext = {
-        linkedin: "LinkedIn",
+        // linkedin: "LinkedIn", // LinkedIn support temporarily disabled
         twitter: "Twitter/X",
         reddit: "Reddit"
     };

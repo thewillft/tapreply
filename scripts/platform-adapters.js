@@ -26,6 +26,8 @@ class PlatformAdapter {
     }
 }
 
+// LinkedIn support temporarily disabled
+/*
 class LinkedInAdapter extends PlatformAdapter {
     constructor() {
         super();
@@ -97,6 +99,7 @@ class LinkedInAdapter extends PlatformAdapter {
         return likesElement ? likesElement.textContent.trim() : null;
     }
 }
+*/
 
 class TwitterAdapter extends PlatformAdapter {
     constructor() {
@@ -296,9 +299,11 @@ class RedditAdapter extends PlatformAdapter {
 
 // Factory function to get the appropriate adapter based on URL
 function getPlatformAdapter(url) {
-    if (url.includes('linkedin.com')) {
-        return new LinkedInAdapter();
-    } else if (url.includes('twitter.com') || url.includes('x.com')) {
+    // LinkedIn support temporarily disabled
+    // if (url.includes('linkedin.com')) {
+    //     return new LinkedInAdapter();
+    // } else 
+    if (url.includes('twitter.com') || url.includes('x.com')) {
         return new TwitterAdapter();
     } else if (url.includes('reddit.com')) {
         return new RedditAdapter();
@@ -308,5 +313,5 @@ function getPlatformAdapter(url) {
 
 // Export for use in content script
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { PlatformAdapter, LinkedInAdapter, TwitterAdapter, RedditAdapter, getPlatformAdapter };
+    module.exports = { PlatformAdapter, /* LinkedInAdapter, */ TwitterAdapter, RedditAdapter, getPlatformAdapter };
 } 

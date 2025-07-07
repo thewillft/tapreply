@@ -21,7 +21,7 @@ The extracted data follows this structure:
 ```javascript
 {
     content: "The actual post content text",
-    platform: "linkedin|twitter|reddit|etc",
+    platform: "twitter|reddit|etc",
     metadata: {
         // Platform-specific metadata fields
         author: "username",
@@ -115,9 +115,11 @@ Add your new platform to the `getPlatformAdapter` function:
 
 ```javascript
 function getPlatformAdapter(url) {
-    if (url.includes('linkedin.com')) {
-        return new LinkedInAdapter();
-    } else if (url.includes('twitter.com') || url.includes('x.com')) {
+    // LinkedIn support temporarily disabled
+    // if (url.includes('linkedin.com')) {
+    //     return new LinkedInAdapter();
+    // } else 
+    if (url.includes('twitter.com') || url.includes('x.com')) {
         return new TwitterAdapter();
     } else if (url.includes('reddit.com')) {
         return new RedditAdapter();
@@ -137,7 +139,6 @@ Add the new platform's URL pattern to `manifest.json`:
   "content_scripts": [
     {
       "matches": [
-        "*://*.linkedin.com/*",
         "*://*.twitter.com/*",
         "*://*.x.com/*",
         "*://*.reddit.com/*",
@@ -164,11 +165,13 @@ async detectPlatform() {
         let platformIcon = '🌐';
         let platformName = 'Unknown Platform';
 
-        if (url.includes('linkedin.com')) {
-            platform = 'linkedin';
-            platformIcon = '💼';
-            platformName = 'LinkedIn';
-        } else if (url.includes('twitter.com') || url.includes('x.com')) {
+        // LinkedIn support temporarily disabled
+        // if (url.includes('linkedin.com')) {
+        //     platform = 'linkedin';
+        //     platformIcon = '💼';
+        //     platformName = 'LinkedIn';
+        // } else 
+        if (url.includes('twitter.com') || url.includes('x.com')) {
             platform = 'twitter';
             platformIcon = '🐦';
             platformName = 'Twitter/X';
@@ -207,6 +210,7 @@ async detectPlatform() {
 - `engagement`: Object with `likes` and `retweets` counts
 
 ### LinkedIn
+- **Temporarily Disabled**: LinkedIn support has been temporarily disabled while we work on improving the feed extraction functionality.
 - `author`: The post author's name
 - `postType`: Type of post ("text", "article", "job", "image")
 - `engagement`: Engagement count

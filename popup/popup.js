@@ -79,11 +79,13 @@ class TapReplyPopup {
             let platformIcon = '🌐';
             let platformName = 'Unknown Platform';
 
-            if (url.includes('linkedin.com')) {
-                platform = 'linkedin';
-                platformIcon = '💼';
-                platformName = 'LinkedIn';
-            } else if (url.includes('twitter.com') || url.includes('x.com')) {
+                    // LinkedIn support temporarily disabled
+        // if (url.includes('linkedin.com')) {
+        //     platform = 'linkedin';
+        //     platformIcon = '💼';
+        //     platformName = 'LinkedIn';
+        // } else 
+        if (url.includes('twitter.com') || url.includes('x.com')) {
                 platform = 'twitter';
                 platformIcon = '🐦';
                 platformName = 'Twitter/X';
@@ -111,10 +113,11 @@ class TapReplyPopup {
         let platformName = 'Unknown Platform';
 
         switch (platform) {
-            case 'linkedin':
-                platformIcon = '💼';
-                platformName = 'LinkedIn';
-                break;
+            // LinkedIn support temporarily disabled
+            // case 'linkedin':
+            //     platformIcon = '💼';
+            //     platformName = 'LinkedIn';
+            //     break;
             case 'twitter':
                 platformIcon = '🐦';
                 platformName = 'Twitter/X';
