@@ -9,10 +9,13 @@ class TapReplyPopup {
     }
 
     init() {
+        this.disableGenerateButton();
         this.bindEvents();
         this.detectPlatform();
         this.loadUserPreferences();
-        this.extractContent();
+        setTimeout(() => {
+            this.extractContent();
+        }, 2000);
     }
 
     bindEvents() {
@@ -128,8 +131,7 @@ class TapReplyPopup {
                 break;
         }
 
-        document.getElementById('platformIcon').textContent = platformIcon;
-        document.getElementById('platformName').textContent = platformName;
+        this.updatePlatformDisplay(platformIcon, platformName);
     }
 
     async extractContent() {
@@ -150,13 +152,52 @@ class TapReplyPopup {
                     this.currentContent = response.contentData.content;
                     this.currentMetadata = response.contentData.metadata;
                     this.displayContent();
+                    this.enableGenerateButton();
+                } else {
+                    this.showError('No post content found on this page. Please navigate to a specific post and try again.');
                 }
             } else {
                 this.showError('No post content found. Please make sure you are on a social media post page.');
             }
         } catch (error) {
-            console.error('Error extracting content:', error);
-            this.showError('Unable to extract post content. Please refresh the page and try again.');
+            // Check if it's a connection error (content script not available)
+            if (error.message && (error.message.includes('Could not establish connection') || 
+                                 error.message.includes('Receiving end does not exist'))) {
+                this.handleUnsupportedPlatform();
+            } else {
+                this.showError('Unable to extract post content. Please refresh the page and try again.');
+            }
+        }
+    }
+
+    handleUnsupportedPlatform() {
+        this.updatePlatformDisplayFromData('unsupported');
+        this.disableGenerateButton();
+        this.currentContent = '';
+        this.currentMetadata = null;
+        this.hideContent();
+    }
+
+    disableGenerateButton() {
+        const generateBtn = document.getElementById('generateBtn');
+        generateBtn.disabled = true;
+        generateBtn.style.opacity = '0.5';
+        generateBtn.style.cursor = 'not-allowed';
+        generateBtn.title = 'TapReply only works on Twitter/X and Reddit. Please navigate to a supported platform.';
+    }
+
+    enableGenerateButton() {
+        const generateBtn = document.getElementById('generateBtn');
+        generateBtn.disabled = false;
+        generateBtn.style.opacity = '1';
+        generateBtn.style.cursor = 'pointer';
+        generateBtn.title = '';
+    }
+
+    hideContent() {
+        const contentSection = document.getElementById('contentSection');
+        if (contentSection) {
+            contentSection.style.display = 'none';
         }
     }
 
@@ -200,6 +241,11 @@ class TapReplyPopup {
     }
 
     async generateReply() {
+        const generateBtn = document.getElementById('generateBtn');
+        if (generateBtn.disabled) {
+            return;
+        }
+
         if (!this.currentContent) {
             this.showError('No post content available. Please refresh the page and try again.');
             return;

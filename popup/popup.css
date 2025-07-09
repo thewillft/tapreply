@@ -175,6 +175,18 @@ body {
     transform: translateY(0);
 }
 
+.generate-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.generate-btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
 .btn-icon {
     font-size: 18px;
 }
