@@ -7,7 +7,8 @@ chrome.runtime.onInstalled.addListener(() => {
         apiKey: '',
         apiProvider: 'openai',
         replyLength: 'short',
-        autoDetectPlatform: true
+        autoDetectPlatform: true,
+        userKnowledge: ''
     });
 });
 
@@ -39,7 +40,7 @@ async function generateReply(data) {
     try {
         const { content, metadata, tone, platform } = data;
         
-        const config = await chrome.storage.local.get(['apiKey', 'apiProvider', 'replyLength']);
+        const config = await chrome.storage.local.get(['apiKey', 'apiProvider', 'replyLength', 'userKnowledge']);
         
         if (!config.apiKey) {
             return {
@@ -48,7 +49,7 @@ async function generateReply(data) {
             };
         }
 
-        const { systemPrompt, userPrompt } = generatePrompt(content, metadata, tone, platform, config.replyLength);
+        const { systemPrompt, userPrompt } = generatePrompt(content, metadata, tone, platform, config.replyLength, config.userKnowledge);
         const reply = await callLLMAPI(systemPrompt, userPrompt, config.apiKey, config.apiProvider);
         
         return {
@@ -100,7 +101,7 @@ async function testApiConnection(data) {
     }
 }
 
-function generatePrompt(content, metadata, tone, platform, replyLength = 'medium') {
+function generatePrompt(content, metadata, tone, platform, replyLength = 'medium', userKnowledge = '') {
     const toneInstructions = {
         supportive: "Supportive, an encouraging reply that shows empathy and understanding towards the post content subject or author",
         analytical: "Analytical, a reply that provides thoughtful insights and constructive feedback, furthering the conversation by bringing value",
@@ -139,7 +140,19 @@ function generatePrompt(content, metadata, tone, platform, replyLength = 'medium
         }
     }
 
-    const systemPrompt = `You're a clever social media user known for smart, tight, and dryly humorous replies. You are given social media post content and asked to write comments that sound like they came from a real, slightly cynical but insightful person. Avoid sounding like a chatbot, overly cheerful, helpful, or corporate. Avoid the use of "—" in your replies. Do not wrap your reply in quotes. Engage with the original post, add value or humor, and never explain yourself. Pay attention to queues from the user about what your reply should contain an how it should sound.
+    const systemPrompt = `You're a clever social media user known for smart, tight, and dryly humorous replies. You are given social media post content and asked to write comments that sound like they came from a real, slightly cynical but insightful person. Avoid sounding like a chatbot, overly cheerful, helpful, or corporate. Engage with the original post, add value or humor, and never explain yourself. Pay attention to queues from the user about what your reply should contain an how it should sound. 
+
+Do's and Dont's:
+- do NOT use "—" or "-' in your replies
+- refrain from using excessive quotes in your replies
+- do NOT wrap your replies in quotes
+- do sprinkle some shorthand in such as "Congratz" or "lol"
+- do use the user knowledge base section to shape your replies, including tone, user experience + background
+- do casually mention products/services in the user knowledge base if it adds value to the post given (focus on value)
+- do NOT overly rely on the user knowledge section, and do NOT force its use in your replies if it decreases the quality/authenticity of the reply
+
+User Knowledge Base:
+${userKnowledge}
 
 Example #1:
 
@@ -151,7 +164,11 @@ Reply - "If only there was a document, a Python improvement proposal of sorts, t
 
 Reply - "The flexibility lets Python stay dynamic, but yeah, runtime checks would be nice sometimes."
 
-Reply - "It's intentional. Keeps Python flexible while letting static tools do the heavy lifting."`;
+Reply - "It's intentional. Keeps Python flexible while letting static tools do the heavy lifting."
+
+Misc Examples:
+
+Reply - "Congrats on the first paying user. SaaS rite of passage tbh. What’s next on the checklist?"`;
 
     const userPrompt = `Reply with a ${platformContext[platform]} comment, ${toneInstructions[tone]}. ${lengthInstructions[replyLength]}.
 

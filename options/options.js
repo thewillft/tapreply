@@ -62,7 +62,8 @@ class TapReplyOptions {
                 'apiProvider',
                 'preferredTone',
                 'replyLength',
-                'autoDetectPlatform'
+                'autoDetectPlatform',
+                'userKnowledge'
             ]);
 
             // Set form values
@@ -82,6 +83,9 @@ class TapReplyOptions {
             
             document.getElementById('autoDetectPlatform').checked = settings.autoDetectPlatform !== false;
 
+            // Set knowledge base
+            document.getElementById('userKnowledge').value = settings.userKnowledge || '';
+
         } catch (error) {
             console.error('Error loading settings:', error);
             this.showStatus('Error loading settings', 'error');
@@ -100,7 +104,8 @@ class TapReplyOptions {
                 apiKey: apiKey,
                 preferredTone: document.getElementById('defaultTone').value,
                 replyLength: document.querySelector('input[name="replyLength"]:checked').value,
-                autoDetectPlatform: document.getElementById('autoDetectPlatform').checked
+                autoDetectPlatform: document.getElementById('autoDetectPlatform').checked,
+                userKnowledge: document.getElementById('userKnowledge').value.trim()
             };
 
             // Validate API key
@@ -191,7 +196,8 @@ class TapReplyOptions {
                 apiProvider: 'openai',
                 preferredTone: 'supportive',
                 replyLength: 'medium',
-                autoDetectPlatform: true
+                autoDetectPlatform: true,
+                userKnowledge: ''
             };
 
             await chrome.storage.local.set(defaultSettings);

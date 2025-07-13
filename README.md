@@ -9,6 +9,7 @@ AI-powered Chrome extension used to generate smart, tone-aware replies for socia
 - **Smart Content Extraction**: Automatically extracts post content and platform-specific metadata for best possible replies
 - **Tone-Aware Replies**: Generate supportive, analytical, or witty replies, with plans to add custom tones soon
 - **Platform-Optimized**: Replies are tailored to each platform's culture and context, whether it be professional or more casual
+- **Personalized Knowledge Base**: Add your expertise, experience, and products/services to create more relevant and authentic replies
 - **Extensible Architecture**: Easy to add support for new platforms in the future with basic programming knowledge
 
 ## Supported Platforms
@@ -61,6 +62,7 @@ This can be done via the extension's options page, found through the chrome brow
 - **API Key**: Set your preferred LLM API key
 - **Reply Length**: Short, medium, or long replies
 - **Default Tone**: Set your preferred default tone
+- **Knowledge Base & Background**: Add information about your expertise, experience, products, or services to personalize your replies
 
 
 ## Architecture
