@@ -13,9 +13,7 @@ class TapReplyPopup {
         this.bindEvents();
         this.detectPlatform();
         this.loadUserPreferences();
-        setTimeout(() => {
-            this.extractContent();
-        }, 2000);
+        this.extractContent(true);
     }
 
     bindEvents() {
@@ -134,7 +132,7 @@ class TapReplyPopup {
         this.updatePlatformDisplay(platformIcon, platformName);
     }
 
-    async extractContent() {
+    async extractContent(retry = false) {
         try {
             const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
             
@@ -163,7 +161,14 @@ class TapReplyPopup {
             // Check if it's a connection error (content script not available)
             if (error.message && (error.message.includes('Could not establish connection') || 
                                  error.message.includes('Receiving end does not exist'))) {
-                this.handleUnsupportedPlatform();
+                // handle case where content script is not available because page hasn't loaded yet
+                if (retry) {
+                    setTimeout(() => {
+                        this.extractContent(false);
+                    }, 2000);
+                } else {
+                    this.handleUnsupportedPlatform();
+                }
             } else {
                 this.showError('Unable to extract post content. Please refresh the page and try again.');
             }

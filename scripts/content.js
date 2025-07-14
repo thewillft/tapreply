@@ -7,7 +7,7 @@ console.log('TapReply content script loaded');
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'extractContent') {
         const contentData = extractPostContent();
-        sendResponse({ contentData: contentData });
+        sendResponse({ contentData: contentData, readyState: document.readyState });
         return true; // Keep message channel open for async response
     }
 });
