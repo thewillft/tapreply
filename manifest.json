@@ -12,8 +12,14 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["tabs", "scripting", "activeTab", "storage"],
-  "host_permissions": ["http://*/*", "https://*/*"],
+  "permissions": ["tabs", "storage"],
+  "host_permissions": [
+    "*://*.twitter.com/*",
+    "*://*.x.com/*",
+    "*://*.reddit.com/*",
+    "https://api.openai.com/*",
+    "https://generativelanguage.googleapis.com/*"
+  ],
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
