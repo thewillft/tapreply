@@ -1,4 +1,4 @@
-# TapReply Privacy Policy
+# Privacy Policy
 
 **Effective Date:** July 17, 2025
 
@@ -47,6 +47,6 @@ If we update this privacy policy, the new version will be posted on this page wi
 
 ## 8. Contact
 If you have questions, contact:  
-**[Your Name or Organization]**  
-[Your Email]  
-(Optional: [GitHub Repo or Website Link])
+TapReply
+tapreplyofficial@gmail.com
+https://github.com/thewillft/tapreply
