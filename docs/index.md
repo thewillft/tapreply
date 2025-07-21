@@ -9,7 +9,7 @@ Whether you’re networking on LinkedIn, engaging on Twitter (X), or replying to
 ---
 
 ## Get Started
-- [View on GitHub](https://github.com/your-username/tapreply)
+- [View on GitHub](https://github.com/thewillft/tapreply)
 - [Configuration Guide](configuration.md)
 - [Privacy Policy](privacy-policy.md)
 
