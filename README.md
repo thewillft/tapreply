@@ -32,10 +32,9 @@ AI-powered Chrome extension used to generate smart, tone-aware replies for socia
 ## Installation
 
 ### Chrome Web Store
-1. WIP
-
-### Packed
-1. WIP
+1. Go to the [TapReply CWS listing](https://chromewebstore.google.com/detail/tapreply/ckcjnceomhdpkimjnagclcmpgbjnnncn)
+2. Click the "Add to Chrome" button
+3. That's it! Pin TapReply in the extensions dropdown menu for ease of use.
 
 ### Unpacked
 1. Clone this repository
@@ -47,7 +46,7 @@ AI-powered Chrome extension used to generate smart, tone-aware replies for socia
 
 ## Usage
 
-1. Navigate to a supported social media platform (LinkedIn, Reddit, Twitter/X, ...)
+1. Navigate to a supported social media platform (Reddit, Twitter/X, ...)
 2. Click the TapReply extension icon in the Chrome extensions dropdown (pin it for ease of use)
 3. Select your preferred tone (supportive, analytical, or witty)
 4. Click "Generate Reply" to create a context-aware reply to the current social media post
