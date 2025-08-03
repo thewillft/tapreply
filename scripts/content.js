@@ -8,6 +8,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'extractContent') {
         const contentData = extractPostContent();
         sendResponse({ contentData: contentData, readyState: document.readyState });
+        console.log(contentData);
         return true; // Keep message channel open for async response
     }
 });

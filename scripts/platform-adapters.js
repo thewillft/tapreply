@@ -153,10 +153,30 @@ class TwitterAdapter extends PlatformAdapter {
             '.css-901oao.css-bfa6kz.r-1re7ezh.r-18u37iz.r-1qd0xha.r-a023e6.r-16dba41.r-ad9z0x.r-bcqeeo.r-qvutc0'
         ];
         
+        // First, try to find @username in spans within User-Name container
+        const userNameContainer = document.querySelector('[data-testid="User-Name"]');
+        if (userNameContainer) {
+            const spans = userNameContainer.querySelectorAll('span');
+            for (const span of spans) {
+                const text = span.textContent.trim();
+                // Look for @username pattern
+                if (text.startsWith('@') && text.length > 1) {
+                    return text; // Return just the @username
+                }
+            }
+        }
+        
+        // If no @username found, try to extract from the full author text
         for (const selector of authorSelectors) {
             const element = document.querySelector(selector);
             if (element && element.textContent.trim()) {
-                return element.textContent.trim();
+                const fullText = element.textContent.trim();
+                // Try to extract @username from the full text
+                const usernameMatch = fullText.match(/@\w+/);
+                if (usernameMatch) {
+                    return usernameMatch[0]; // Return just the @username
+                }
+                return fullText; // Fallback to full text
             }
         }
         return null;
@@ -292,7 +312,7 @@ class RedditAdapter extends PlatformAdapter {
     }
 
     extractFlair() {
-        const flairElement = document.querySelector('.Post__flair, .flair');
+        const flairElement = document.querySelector('.flair-content, .Post__flair, .flair');
         return flairElement ? flairElement.textContent.trim() : null;
     }
 }
