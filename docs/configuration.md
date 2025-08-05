@@ -45,6 +45,10 @@ Set your preferred response length:
 ### Platform Detection
 - **Auto-detect platform and adapt tone** - When enabled, TapReply automatically adjusts the tone based on the social media platform (LinkedIn, Twitter/X, Reddit, etc.)
 
+### Reply Style
+- **All lowercase replies** - When enabled, the LLM will be instructed to a provide
+a reply consisting primarily of lowercase characters for a more casual style.
+
 ## Knowledge Base & Background
 
 ### Your Knowledge & Background
@@ -78,6 +82,7 @@ Use the "Reset to Defaults" button to restore all settings to their original val
 - Default Tone: Supportive
 - Reply Length: Medium
 - Platform Detection: Enabled
+- All Lowercase: Disabled
 - Knowledge Base: Empty
 
 ## Privacy and Security

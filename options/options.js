@@ -63,6 +63,7 @@ class TapReplyOptions {
                 'preferredTone',
                 'replyLength',
                 'autoDetectPlatform',
+                'allLowercase',
                 'userKnowledge'
             ]);
 
@@ -82,6 +83,7 @@ class TapReplyOptions {
             document.querySelector(`input[name="replyLength"][value="${replyLength}"]`).checked = true;
             
             document.getElementById('autoDetectPlatform').checked = settings.autoDetectPlatform !== false;
+            document.getElementById('allLowercase').checked = settings.allLowercase === true;
 
             // Set knowledge base
             document.getElementById('userKnowledge').value = settings.userKnowledge || '';
@@ -105,6 +107,7 @@ class TapReplyOptions {
                 preferredTone: document.getElementById('defaultTone').value,
                 replyLength: document.querySelector('input[name="replyLength"]:checked').value,
                 autoDetectPlatform: document.getElementById('autoDetectPlatform').checked,
+                allLowercase: document.getElementById('allLowercase').checked,
                 userKnowledge: document.getElementById('userKnowledge').value.trim()
             };
 
@@ -197,6 +200,7 @@ class TapReplyOptions {
                 preferredTone: 'supportive',
                 replyLength: 'medium',
                 autoDetectPlatform: true,
+                allLowercase: false,
                 userKnowledge: ''
             };
 

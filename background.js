@@ -3,11 +3,12 @@ chrome.runtime.onInstalled.addListener(() => {
     console.log("TapReply installed");
     // Set initial state
     chrome.storage.local.set({
-        preferredTone: 'witty',
+        preferredTone: 'analytical',
         apiKey: '',
         apiProvider: 'openai',
         replyLength: 'short',
         autoDetectPlatform: true,
+        allLowercase: false,
         userKnowledge: ''
     });
 });
@@ -40,7 +41,7 @@ async function generateReply(data) {
     try {
         const { content, metadata, tone, platform } = data;
         
-        const config = await chrome.storage.local.get(['apiKey', 'apiProvider', 'replyLength', 'userKnowledge']);
+        const config = await chrome.storage.local.get(['apiKey', 'apiProvider', 'replyLength', 'userKnowledge', 'allLowercase']);
         
         if (!config.apiKey) {
             return {
@@ -49,7 +50,7 @@ async function generateReply(data) {
             };
         }
 
-        const { systemPrompt, userPrompt } = generatePrompt(content, metadata, tone, platform, config.replyLength, config.userKnowledge);
+        const { systemPrompt, userPrompt } = generatePrompt(content, metadata, tone, platform, config.replyLength, config.userKnowledge, config.allLowercase);
         const reply = await callLLMAPI(systemPrompt, userPrompt, config.apiKey, config.apiProvider);
         
         return {
@@ -101,7 +102,7 @@ async function testApiConnection(data) {
     }
 }
 
-function generatePrompt(content, metadata, tone, platform, replyLength = 'medium', userKnowledge = '') {
+function generatePrompt(content, metadata, tone, platform, replyLength = 'medium', userKnowledge = '', allLowercase = false) {
     const toneInstructions = {
         supportive: "Supportive, an encouraging reply that shows empathy and understanding towards the post content subject or author",
         analytical: "Analytical, a reply that provides thoughtful insights and constructive feedback, furthering the conversation by bringing value",
@@ -140,35 +141,7 @@ function generatePrompt(content, metadata, tone, platform, replyLength = 'medium
         }
     }
 
-    const systemPrompt = `You're a clever social media user known for smart, tight, and dryly humorous replies. You are given social media post content and asked to write comments that sound like they came from a real, slightly cynical but insightful person. Avoid sounding like a chatbot, overly cheerful, helpful, or corporate. Engage with the original post, add value or humor, and never explain yourself. Pay attention to queues from the user about what your reply should contain an how it should sound. 
-
-Do's and Dont's:
-- do NOT use "—" or "-' in your replies
-- refrain from using excessive quotes in your replies
-- do NOT wrap your replies in quotes
-- do sprinkle some shorthand in such as "Congratz" or "lol"
-- do use the user knowledge base section to shape your replies, including tone, user experience + background
-- do casually mention products/services in the user knowledge base if it adds value to the post given (focus on value)
-- do NOT overly rely on the user knowledge section, and do NOT force its use in your replies if it decreases the quality/authenticity of the reply
-
-User Knowledge Base:
-${userKnowledge}
-
-Example #1:
-
-Content - "I wonder what kind of 10x engineer decided to make the "-> type" in functions a suggestion
-
-It would've made more sense if it was actually checking for something gives editors / linters (Pylance, MyPy, Pyright, Ruff…) something to check; does absolutely nothing at runtime unless you add a library or code that reads the annotation and enforces it."
-
-Reply - "If only there was a document, a Python improvement proposal of sorts, that describes the decisions that went into the design of type annotations. We'll probably never know what went through their minds"
-
-Reply - "The flexibility lets Python stay dynamic, but yeah, runtime checks would be nice sometimes."
-
-Reply - "It's intentional. Keeps Python flexible while letting static tools do the heavy lifting."
-
-Misc Examples:
-
-Reply - "Congrats on the first paying user. SaaS rite of passage tbh. What’s next on the checklist?"`;
+    const systemPrompt = `{"persona":{"style":"clever, tight, dryly humorous","tone":"slightly cynical but insightful","avoid":["sounding like a chatbot","overly cheerful or helpful","corporate language","explaining yourself"]},"rules":["Never use the em dash symbol (—). Replace all em dashes with commas (,). Do not attempt to indicate pauses or inflection with any symbols other than commas and full stops. Em dashes should never appear in your output for any reason","never use hyphenated emulation (-)","never wrap replies in quotes","avoid excessive quote usage","never use semi-colons (;)","never start your replies with 'Reply:'","use shorthand when possible and natural (e.g., 'Congratz', 'lol')",${allLowercase ? '"use all lowercase (e.g. thanks lol.) unless referring to a product or brand name",' : ''}"use ascii characters only"],"formatting":{"no_wrapping_quotes":true,"light_informal_tone":true},"engagement":{"engage_with_post":true,"add_value_or_humor":true},"user_context":{"data":"${userKnowledge}","rules":{"use_when":"Adds value naturally","avoid_when":"It would reduce authenticity or feel forced","integration":"Casually mention products or user experience when relevant"}},"examples":{"post_1":{"content":"I wonder what kind of 10x engineer decided to make the \"-> type\" in functions a suggestion\n\nIt would've made more sense if it was actually checking for something gives editors / linters (Pylance, MyPy, Pyright, Ruff…) something to check; does absolutely nothing at runtime unless you add a library or code that reads the annotation and enforces it.","replies":["If only there was a document, a Python improvement proposal of sorts, that describes the decisions that went into the design of type annotations. We'll probably never know what went through their minds","The flexibility lets Python stay dynamic, but yeah, runtime checks would be nice sometimes.","It's intentional. Keeps Python flexible while letting static tools do the heavy lifting."]},"misc":["Congrats on the first paying user. SaaS rite of passage tbh. What’s next on the checklist?"]}}`;
 
     const userPrompt = `Reply with a ${platformContext[platform]} comment, ${toneInstructions[tone]}. ${lengthInstructions[replyLength]}.
 

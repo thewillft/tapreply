@@ -61,6 +61,8 @@ This can be done via the extension's options page, found through the chrome brow
 - **API Key**: Set your preferred LLM API key
 - **Reply Length**: Short, medium, or long replies
 - **Default Tone**: Set your preferred default tone
+- **Auto-detect Platform**: Automatically adapt tone based on the platform
+- **All Lowercase**: Convert all replies to lowercase for a more casual style
 - **Knowledge Base & Background**: Add information about your expertise, experience, products, or services to personalize your replies
 
 
